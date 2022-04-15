@@ -1,10 +1,28 @@
 import React, {useState, useEffect} from 'react';
 import NewTask from './new-task/NewTask';
 import TaskList from './task-list/TaskList';
+import useHttp from './useHttp';
 
 const Task = () => {
-    const [isLoading, setIsLoading] = useState(false);
     const [tasks, setTasks] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+
+    // const transformData = (taskObj) => {
+    //     const loadedData = [];
+
+    //     for(const dataKey in taskObj){
+    //         loadedData.push({
+    //             id: dataKey,
+    //             text: taskObj[dataKey].text
+    //         })
+    //     }
+
+    //     setTasks(loadedData);
+    // }
+
+    // const {isLoading, sendRequest: fetchTask} = useHttp({
+    //     url: 'https://react-http-a3d43-default-rtdb.firebaseio.com/tasks.json',
+    // }, transformData);
 
     const fetchTask = async () => {
         setIsLoading(true);

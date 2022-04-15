@@ -1,43 +1,40 @@
-import React, { useReducer } from 'react';
-import CartContext from './card-context';
+import React, { useReducer } from "react";
+import CartContext from "./card-context";
 
-const defaultState = {
-  items: [],
-  totalAmount: 0
-}
 const cartReducer = (state, action) => {
-  if(action.type === "ADD"){
+  if (action.type === "ADD") {
     const updatedItems = state.items.concat(action.item);
-    const updatedAmount = state.totalAmount + action.item.price * action.item.amount;
+    const newTotalAmount =
+      state.totalAmount + action.item.price * action.item.amount;
     return {
       items: updatedItems,
-      totalAmount: updatedAmount
-    }
+      totalAmount: newTotalAmount,
+    };
   }
-  return defaultState;
-}
+  return { items: [], totalAmount: 0 };
+};
 
 const CartProvider = (props) => {
-  const [cartState, dispatchCartAction] = useReducer(cartReducer, defaultState);
+  const [cartState, dispatchCartAction] = useReducer(cartReducer, {
+    items: [],
+    totalAmount: 0,
+  });
+  const addItemToCart = (item) => {
+    dispatchCartAction({ type: "ADD", item: item });
+  };
+  const removeItemsFromCart = (id) => {};
 
-    const addItemToCart = (item) => {
-      dispatchCartAction({type: "ADD", item: item})
-    };
-    const removeItemsFromCart = (id) => {
-      dispatchCartAction({type: "REMOVE", id: id})
-    };
-    
-    const context = {
-        items: cartState.items,
-        totalAmount: cartState.totalAmount,
-        addItem: addItemToCart,
-        removeItem: removeItemsFromCart
-    }
+  const context = {
+    items: cartState.items,
+    totalAmount: cartState.totalAmount,
+    addItem: addItemToCart,
+    removeItem: removeItemsFromCart,
+  };
   return (
     <CartContext.Provider value={context}>
-        {props.children}
+      {props.children}
     </CartContext.Provider>
-  )
-}
+  );
+};
 
-export default CartProvider
+export default CartProvider;

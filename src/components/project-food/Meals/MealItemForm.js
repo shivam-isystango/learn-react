@@ -1,34 +1,47 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState } from "react";
 
 const MealItemForm = (props) => {
-  const [isValid, setIsValid] = useState(true);
-  const inputValue = useRef();
-
-  const submitHandler = (e) => {
+  const [amountValid, setAmountValid] = useState(true);
+  const amountRef = useRef();
+  const submitFormHandler = (e) => {
+    // alert("working");
     e.preventDefault();
 
-    const inputAmount = inputValue.current.value;
-    const inputAmountToNumber = +inputAmount;
+    const enteredAmount = amountRef.current.value;
+    const enteredAmountNumber = +enteredAmount;
 
-    if(inputAmount.trim().length === 0 || inputAmountToNumber < 0 || inputAmountToNumber > 5){
-      setIsValid(false);
+    if (
+      enteredAmount.trim().length === 0 ||
+      enteredAmountNumber < 1 ||
+      enteredAmountNumber > 5
+    ) {
+      setAmountValid(false);
       return;
     }
 
-    props.OnAddToCart(inputAmountToNumber);
-  }
+    props.onAddToCart(enteredAmountNumber);
+  };
   return (
     <>
-      <form action="" onSubmit={submitHandler}>
-        <div className="input-group align-items-center">
-            <strong className="w-50">Amount</strong>
-            <input ref={inputValue} type="number" className="form-control" min={1} max={5} defaultValue={1} step={1} />
-            <button className="btn btn-outline-secondary">+ Add</button>
+      <form action="" onSubmit={submitFormHandler}>
+        <div className="input-group">
+          <input
+            ref={amountRef}
+            type="number"
+            className="form-control"
+            min={1}
+            defaultValue={1}
+          />
+          <button className="btn btn-outline-secondary">+ Add</button>
         </div>
-          {!isValid && <p className="text-end text-danger mb-0"><small>Please enter valid amount</small></p>}
+        {!amountValid && (
+          <small className="text-danger">
+            Please enter valid amount (1 - 5)
+          </small>
+        )}
       </form>
     </>
-  )
-}
+  );
+};
 
-export default MealItemForm
+export default MealItemForm;

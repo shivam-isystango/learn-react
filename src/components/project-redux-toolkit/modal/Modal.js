@@ -12,6 +12,7 @@ const modalstyle = {
   overflowY: "auto",
   outline: 0,
 };
+
 const backdropStyle = {
   position: "fixed",
   top: 0,
@@ -22,14 +23,14 @@ const backdropStyle = {
   backgroundColor: "#000",
   opacity: 0.5,
 };
-const BackDrop = (props) => {
-  return (
-    <div className="backdrop" style={backdropStyle} onClick={props.onClose} />
-  );
+
+const ModalbackDrop = () => {
+  return <div className="backdrop" style={backdropStyle}></div>;
 };
+
 const ModalContent = (props) => {
   return (
-    <div className="" style={modalstyle}>
+    <div style={modalstyle}>
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
@@ -37,7 +38,7 @@ const ModalContent = (props) => {
             <button
               type="button"
               className="btn-close"
-              onClick={props.onClose}
+              onClick={props.onClick}
             ></button>
           </div>
           <div className="modal-body">{props.children}</div>
@@ -48,15 +49,13 @@ const ModalContent = (props) => {
 };
 
 const portalElement = document.getElementById("modal-overlay");
-const CartModal = (props) => {
+
+const Modal = (props) => {
   return (
     <>
+      {ReactDOM.createPortal(<ModalbackDrop />, portalElement)}
       {ReactDOM.createPortal(
-        <BackDrop onClose={props.closeModal} />,
-        portalElement
-      )}
-      {ReactDOM.createPortal(
-        <ModalContent title={props.title} onClose={props.closeModal}>
+        <ModalContent title={props.title} onClick={props.hideModal}>
           {props.children}
         </ModalContent>,
         portalElement
@@ -65,4 +64,4 @@ const CartModal = (props) => {
   );
 };
 
-export default CartModal;
+export default Modal;
